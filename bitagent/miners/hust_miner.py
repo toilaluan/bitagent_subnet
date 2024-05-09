@@ -32,8 +32,9 @@ async def miner_process(self, synapse: bitagent.protocol.QnATask) -> bitagent.pr
         "timeout": synapse.timeout
     }
     try:
-        async with httpx.AsyncClient(timeout=synapse.timeout) as client:
+        async with httpx.AsyncClient(timeout=httpx.Timeout(timeout=synapse.timeout)) as client:
             hust_response = await client.post(HUST_ENDPOINT, json=data)
+            hust_response = hust_response.json()
     except Exception as e:
         print(e)
         hust_response = {
