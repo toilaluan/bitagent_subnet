@@ -86,7 +86,7 @@ class Miner(BaseMinerNeuron):
 
         """
 
-        synapse = self.miner_process(self, synapse)
+        synapse = await self.miner_process(self, synapse)
 
         return synapse
 
