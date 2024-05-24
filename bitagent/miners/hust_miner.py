@@ -26,10 +26,16 @@ def miner_init(self, config=None):
     pass
 
 async def miner_process(self, synapse: bitagent.protocol.QnATask) -> bitagent.protocol.QnATask:
+    if not isinstance(synapse.message_history, list):
+        synapse.message_history = synapse.message_history.to_list()
+
     data = {
         "prompt": synapse.prompt,
         "datas": synapse.datas,
-        "timeout": synapse.timeout
+        "timeout": synapse.timeout,
+        "tools": synapse.tools,
+        "notes": synapse.notes,
+        "message_history": synapse.message_history,
     }
     try:
         async with httpx.AsyncClient(timeout=httpx.Timeout(timeout=synapse.timeout)) as client:
