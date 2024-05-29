@@ -30,6 +30,8 @@ async def miner_process(self, synapse: bitagent.protocol.QnATask) -> bitagent.pr
         synapse.message_history = synapse.message_history.to_list()
 
     data = {
+        "tool":synapse.tools,
+        "chat_history":synapse.synapse.message_history.to_list(),
         "prompt": synapse.prompt,
         "datas": synapse.datas,
         "timeout": synapse.timeout,
