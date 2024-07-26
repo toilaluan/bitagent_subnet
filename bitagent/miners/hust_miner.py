@@ -31,7 +31,7 @@ async def miner_process(self, synapse: bitagent.protocol.QnATask) -> bitagent.pr
     # print(synapse.messages)
     try:
         # New protocol
-        message_history=[]
+        messages=[]
         if synapse.messages:
             for item in synapse.messages:
                 role=str(item.role)
@@ -39,18 +39,7 @@ async def miner_process(self, synapse: bitagent.protocol.QnATask) -> bitagent.pr
                     "role":role,
                     "content":item.content
                 }
-                message_history.append(json_item)
-
-        # Old protocol
-        old_message_history=[]
-        if "conversation history" in synapse.notes or "Tool Calling" in synapse.notes:
-            for item in synapse.message_history.messages:
-                role=str(item.role)
-                json_item={
-                    "role":role,
-                    "content":item.content
-                }
-                old_message_history.append(json_item)
+                messages.append(json_item)
 
         tools = [t.to_dict() for t in synapse.tools]
         data = {
@@ -58,8 +47,7 @@ async def miner_process(self, synapse: bitagent.protocol.QnATask) -> bitagent.pr
             "datas": synapse.datas,
             "timeout": synapse.timeout,
             "notes": synapse.notes,
-            "message_history": message_history,
-            "old_history":old_message_history,
+            "messages": messages,
             "tools" : tools
         }
     except:
